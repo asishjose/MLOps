@@ -1,0 +1,18 @@
+services:
+  classifier:
+    build:
+      context: ./classifier
+    container_name: std-cls-classifier-comp
+    ports:
+      - "5002:5000"
+
+  std-cls-app:
+    build:
+      context: ./std_cls_app
+    container_name: std-cls-app-comp
+    depends_on:
+      - classifier
+    environment:
+      CLASSIFIER_URL: http://classifier:5000/predict
+    ports:
+      - "8002:8000"
